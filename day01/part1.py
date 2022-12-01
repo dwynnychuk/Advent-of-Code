@@ -1,13 +1,16 @@
-# Day 1 or AOC 2022
-#import pandas as pd
-
-#data = pd.read_csv("day01/input.txt", header=None)
-#print(data.iloc[2:10])
+# Day 1 of AOC 2022
 
 with open("day01/input.txt") as f:
     data = f.read().splitlines()
 
-dataInt = []
+elfSum = []
+currentSum = 0
+
 for d in data:
-    if
-print(dataInt)
+    if d == '':
+        elfSum.append(currentSum)
+        currentSum = 0
+    else:
+        currentSum += float(d)
+
+print(max(elfSum))

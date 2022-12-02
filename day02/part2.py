@@ -1,6 +1,4 @@
 # Day 2 of AOC 2022
-# 0 point X, 3 point Y, 6 point Z
-# 1 point Rock, 2 points Paper, 3 points Scissors
 
 with open("day02/input.txt") as f:
     data = f.read().splitlines()

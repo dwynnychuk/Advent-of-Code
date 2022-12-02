@@ -1,6 +1,4 @@
 # Day 2 of AOC 2022
-# 1 point X, 2 point Y, 3 point Z
-# 0 point loss, 3 point tie, 6 point Win
 
 with open("day02/input.txt") as f:
     data = f.read().splitlines()

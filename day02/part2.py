@@ -1,4 +1,4 @@
-# Day 2 of AOC 2022
+# Day 02 of AOC 2022
 
 with open("day02/input.txt") as f:
     data = f.read().splitlines()

@@ -23,7 +23,7 @@ for i in range(len(elf)):
     elif play[i] == "X" and elf[i] == "C":
         points += 6
         points += 1
-    if play[i] == "Y" and elf[i] == "A":
+    elif play[i] == "Y" and elf[i] == "A":
         points += 6
         points += 2
     elif play[i] == "Y" and elf[i] == "B":
@@ -32,7 +32,7 @@ for i in range(len(elf)):
     elif play[i] == "Y" and elf[i] == "C":
         points += 0
         points += 2
-    if play[i] == "Z" and elf[i] == "A":
+    elif play[i] == "Z" and elf[i] == "A":
         points += 0
         points += 3
     elif play[i] == "Z" and elf[i] == "B":

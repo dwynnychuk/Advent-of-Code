@@ -13,4 +13,4 @@ for d in data:
     elif int(s2_s) <= int(s1_s) and int(s2_e) >= int(s1_e):
         contained += 1
 
-print(contained)
+print(f"The number of fully contained zones is: {contained}.")

@@ -36,11 +36,30 @@ seven.reverse()
 eight.reverse()
 nine.reverse()
 
+array = [one, two, three, four, five, six, seven, eight, nine]
+for r in array:
+    while(" " in r):
+        r.remove(" ")
+
 quantity = []
 old = []
 new = []
 
-for l in data[dataStart:dataStart+3]:
+for l in data[dataStart:]:
     _, q, _, o, _, n = l.split(" ")
     quantity.append(q)
-print(quantity)
+    old.append(o)
+    new.append(n)
+
+for lines in range(len(quantity)):
+    fRow = int(old[lines]) - 1
+    tRow = int(new[lines]) - 1
+    for q in range(int(quantity[lines])):
+        transfer = array[fRow].pop()
+        array[tRow].append(transfer)
+
+winner = []
+
+for w in range(9):
+    winner.append(array[w][-1])
+print(winner)

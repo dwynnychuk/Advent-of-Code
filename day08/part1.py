@@ -17,7 +17,6 @@ def CheckVisibility(row, column, treeArray, totRow, totCol):
     if visL:
         return True
 
-
     # check right
     visR = True
     for r in range(column+1, totCol):

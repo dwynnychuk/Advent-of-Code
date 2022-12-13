@@ -78,14 +78,15 @@ def update_all_positions(knots, direction):
                 knots[i].update_position([x_new, y_new])
 
 tail_visited = [[0,0]]
-knots = [Knot(0), Knot(1)]
+knots = []
+number = 10
+knots = [Knot(i) for i in range(number)]
 
 for m in range(len(move_direction)):
     for _ in range(move_quantity[m]):
         update_all_positions(knots, move_direction[m])
 
-ans = len(knots[1].distinct_positions())
+ans = len(knots[-1].distinct_positions())
 print(f"The number of positions visited by tail is: {ans}")
-
 
 

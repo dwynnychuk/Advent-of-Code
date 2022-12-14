@@ -4,10 +4,10 @@ with open("day10/input.txt") as f:
 
 def check_cycle(current_row, cycle):
     """ Check to see if current row is full. If it is, print and reset row and cycle"""
-    if cycle == 41:
+    if cycle == 40:
         print(''.join(current_row))
         current_row = []
-        cycle = 1
+        cycle = 0
         return current_row, cycle
     else:
         return current_row, cycle
@@ -20,16 +20,11 @@ def print_char(cycle, X):
         char_to_print = '.'
     return char_to_print
 
-# begin or continue
-# draw pixel
-# move register
-# increase position
-
 X = 1
-cycle = 1
+cycle = 0
 current_row = []
 
-for d in data:
+for d in data[:]:
 
     if d.startswith("noop"):
         current_row, cycle = check_cycle(current_row, cycle)
@@ -49,3 +44,6 @@ for d in data:
         current_row.append(char_to_print)
         X += V
         cycle += 1
+
+print(('').join(current_row))
+# ZUPRFECL

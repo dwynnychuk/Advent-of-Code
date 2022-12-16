@@ -1,0 +1,91 @@
+# AOC 2022 day 11
+import numpy as np
+from math import floor
+
+with open("day11/input.txt") as f:
+    data = f.read().splitlines()
+
+## Initializations
+num_monkeys = 8
+rounds = 10000
+test_nums = []
+true_throw = []
+false_throw = []
+starting_items = []
+monkey_business_array = []
+common_divisor = 1
+
+## Read data
+for d in data:
+    if "Test: divisible by" in d:
+        test_nums.append(int(d.split()[-1]))
+    elif "If true:" in d:
+        true_throw.append(int(d.split()[-1]))
+    elif "If false:" in d:
+        false_throw.append(int(d.split()[-1]))
+    elif "Starting" in d:
+        starting_items.append(d.split(sep=": ")[-1])
+
+## Monkey class
+class Monkey:
+    def __init__(self, id):
+        self.id = id
+        self.worry_items = []
+        self.test_num = 0
+        self.true_throw = -1
+        self.false_throw = -1
+        self.inspected = 0
+
+    def __str__(self) -> str:
+        return f"Monkey #{self.id}"
+
+def new_worry(worry, id):
+    if id == 0:
+        new_worry = worry * 7
+    elif id == 1:
+        new_worry = worry + 7
+    elif id == 2:
+        new_worry = worry * 3
+    elif id == 3:
+        new_worry = worry + 3
+    elif id == 4:
+        new_worry = worry * worry
+    elif id == 5:
+        new_worry = worry + 8
+    elif id == 6:
+        new_worry = worry + 2
+    elif id == 7:
+        new_worry = worry + 4
+    return new_worry
+
+# Initialize Monkeys
+monkeys = [Monkey(i) for i in range(num_monkeys)]
+for j in range(num_monkeys):
+    monkeys[j].worry_items = list(starting_items[j].split(sep=", "))
+    monkeys[j].test_num = test_nums[j]
+    common_divisor = common_divisor * monkeys[j].test_num
+    for k in range(len(monkeys[j].worry_items)):
+        monkeys[j].worry_items[k] = int(monkeys[j].worry_items[k])
+    
+    monkeys[j].true_throw = true_throw[j]
+    monkeys[j].false_throw = false_throw[j]
+
+for round in range(rounds):
+    print(f"Starting round #{round}")
+    for mon in monkeys:
+        while len(mon.worry_items) > 0:
+            temp_worry = mon.worry_items.pop(0)
+            mon.inspected += 1
+            temp_worry = new_worry(temp_worry, mon.id)
+            temp_worry = temp_worry % common_divisor
+            if temp_worry % mon.test_num == 0:
+                throw_monkey = mon.true_throw
+            else:
+                throw_monkey = mon.false_throw
+            monkeys[throw_monkey].worry_items.append(temp_worry)
+
+total_inspections = sorted([monkeys[i].inspected for i in range(num_monkeys)])
+print(total_inspections)
+monkey_business_array = total_inspections[-2:]
+mb = monkey_business_array[0] * monkey_business_array[1]
+print(f"The level of monkey business is: {mb}\n")

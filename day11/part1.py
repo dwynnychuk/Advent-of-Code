@@ -30,6 +30,7 @@ class Monkey:
     def __init__(self, id):
         self.id = id
         self.worry_items = []
+        self.test_num = 0
         self.true_throw = -1
         self.false_throw = -1
         self.inspected = 0
@@ -63,6 +64,7 @@ def new_worry(worry, id):
 monkeys = [Monkey(i) for i in range(num_monkeys)]
 for j in range(num_monkeys):
     monkeys[j].worry_items = list(starting_items[j].split(sep=", "))
+    monkeys[j].test_num = test_nums[j]
     for k in range(len(monkeys[j].worry_items)):
         monkeys[j].worry_items[k] = int(monkeys[j].worry_items[k])
     
@@ -77,8 +79,17 @@ for j in range(num_monkeys):
 # throw
 
 for round in range(rounds):
-    pass
-
+    for mon in monkeys:
+        while len(mon.worry_items) > 0:
+            temp_worry = mon.worry_items.pop(0)
+            mon.inspected += 1
+            temp_worry = new_worry(temp_worry, mon.id)
+            temp_worry = monkey_round(temp_worry)
+            if temp_worry % mon.test_num == 0:
+                throw_monkey = mon.true_throw
+            else:
+                throw_monkey = mon.false_throw
+            monkeys[throw_monkey].worry_items.append(temp_worry)
 
 
 

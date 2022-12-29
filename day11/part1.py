@@ -71,13 +71,6 @@ for j in range(num_monkeys):
     monkeys[j].true_throw = true_throw[j]
     monkeys[j].false_throw = false_throw[j]
 
-# worry level old
-# inspection
-# worry level new
-# worry level = int(rounddown(worry/3))
-# test
-# throw
-
 for round in range(rounds):
     for mon in monkeys:
         while len(mon.worry_items) > 0:
@@ -90,8 +83,6 @@ for round in range(rounds):
             else:
                 throw_monkey = mon.false_throw
             monkeys[throw_monkey].worry_items.append(temp_worry)
-
-
 
 total_inspections = sorted([monkeys[i].inspected for i in range(num_monkeys)])
 monkey_business_array = total_inspections[-2:]

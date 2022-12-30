@@ -9,27 +9,44 @@ rows = len(data)
 cols = len(data[0])
 elevations = np.zeros((rows,cols))
 
-minimums = []
-
 for r in range(rows):
     for c in range(cols):
         e = data[r][c]
         match e:
             case "S":
                 start = (r,c)
+                e = "a"
             case "E":
                 end = (r,c)
+                e = "z"
+        elevations[r][c] = ord(e) - 97
 
-def find_elevation(char):
-    if char == "S":
-        elevation = 0
-    elif char == "E":
-        elevation = 25
-    else:
-        elevation = ord(char) - 97
-    return elevation
-
+#find neighboring points
 def find_neighbours(row, column):
-    for d_row, d_col in [[1,0],[-1.,0],[0,-1],[0,1]]:
+    for d_row, d_col in [[1,0],[-1,0],[0,-1],[0,1]]:
         new_row = row + d_row
         new_col = column + d_col
+
+        if not (0 <= new_row < rows and 0 <= new_col < cols):
+            continue
+
+        if elevations[new_row][new_col] <= elevations[row][column] + 1:
+            yield new_row, new_col
+
+visited = np.zeros((rows,cols), dtype=bool)
+heap = [(0, start[0], start[1])]
+
+#dijkstra
+while True:
+    cost, i, j = heappop(heap)
+
+    if visited[i][j]:
+        continue
+    visited[i][j] = True
+
+    if (i,j) == end:
+        print(f"The total steps taken was: {cost}")
+        break
+
+    for nr, nc in find_neighbours(i, j):
+        heappush(heap, (cost + 1, nr, nc))

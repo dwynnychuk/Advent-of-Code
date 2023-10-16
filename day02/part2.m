@@ -6,9 +6,9 @@
 % B Paper
 % C Scissors
 
-% X Rock
-% Y Paper
-% Z Scissors
+% X Lose
+% Y Draw
+% Z Win
 
 % 0 Loss
 % 3 Draw
@@ -32,14 +32,14 @@ for i = 1:numPairs
     switch opponent
         case 'A'
             if strcmp(personal,'X')
-                outcome = 'DRAW';
-                scorePlay(i) = 1;
-            elseif strcmp(personal,'Y')
-                outcome = 'WIN';
-                scorePlay(i) = 2;
-            else
                 outcome = 'LOSS';
                 scorePlay(i) = 3;
+            elseif strcmp(personal,'Y')
+                outcome = 'DRAW';
+                scorePlay(i) = 1;
+            else
+                outcome = 'WIN';
+                scorePlay(i) = 2;
             end
 
         case 'B'
@@ -56,14 +56,14 @@ for i = 1:numPairs
 
         case 'C'
             if strcmp(personal,'X')
-                outcome = 'WIN';
-                scorePlay(i) = 1;
-            elseif strcmp(personal,'Y')
                 outcome = 'LOSS';
                 scorePlay(i) = 2;
-            else
+            elseif strcmp(personal,'Y')
                 outcome = 'DRAW';
                 scorePlay(i) = 3;
+            else
+                outcome = 'WIN';
+                scorePlay(i) = 1;
             end
     end
 

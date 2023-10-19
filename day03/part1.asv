@@ -21,5 +21,17 @@ priority = ['a' 'b' 'c' 'd' 'e' 'f' 'h' 'i' 'j' 'k' 'l' 'm' 'n' 'o' 'p'...
 repeats = strings(size(lines));
 values = zeros(size(lines));
 
-for i = 1:size(lines,2))
-    
+for i = 1:size(lines,2)
+    rucksack = strsplit(lines(1,i),'');
+    rucksack = rucksack{1};
+
+    totalItems = length(rucksack);
+    leftHalf = rucksack(1:totalItems/2);
+    rightHalf = rucksack(((totalItems/2)+1):totalItems);
+
+    for j = 1:(totalItems/2)
+        if sum(contains(rightHalf,leftHalf(j))) > 0
+            repeats(j) = leftHalf(j);
+        end
+    end
+end

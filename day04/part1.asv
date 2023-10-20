@@ -1,6 +1,6 @@
 % Advent of Code 2022
 % Day 4
-% Part 2
+% Part 1
 
 clear all
 clc
@@ -30,9 +30,5 @@ for i = 1:numPairs
     elf1High = str2double(elf1Lims(2,1));
 
     elf2Low = str2double(elf2Lims(1,1));
-    elf2High = str2double(elf2Lims(2,1));
-
-    if ((elf1Low <= elf2High) && (elf1High >= elf2Low)) || ((elf2Low <= elf1High) && (elf2High >= elf1Low))
-        encapsulated = encapsulated + 1;
-    end
+    elf2High = str2num(elf2Lims(2,1));
 end

@@ -18,32 +18,32 @@ priority = ['a' 'b' 'c' 'd' 'e' 'f' 'g' 'h' 'i' 'j' 'k' 'l' 'm' 'n' 'o' 'p'...
     'q' 'r' 's' 't' 'u' 'v' 'w' 'x' 'y' 'z' 'A' 'B' 'C' 'D' 'E' 'F' 'G'...
     'H' 'I' 'J' 'K' 'L' 'M' 'N' 'O' 'P' 'Q' 'R' 'S' 'T' 'U' 'V' 'W' 'X' 'Y' 'Z'];
 
-repeats = strings(size(lines));
-values = zeros(size(lines));
-
 numberGroups = size(lines,2)/3;
 
+repeats = strings(1,numberGroups);
+values = zeros(1,numberGroups);
+
 for i = 1:numberGroups
-    rucksack1 = strsplit(lines(1,i),'');
-    rucksack2 = strsplit(lines(1,i),'');
-    rucksack3 = strsplit(lines(1,i),'');
+    rucksack1 = strsplit(lines(1,(3*(i-1)+1)),'');
+    rucksack2 = strsplit(lines(1,(3*(i-1)+2)),'');
+    rucksack3 = strsplit(lines(1,(3*(i-1)+3)),'');
+
     rucksack1 = rucksack1{1};
     rucksack2 = rucksack2{1};
     rucksack3 = rucksack3{1};
 
-    totalItems = length(rucksack);
-    leftHalf = rucksack(1:totalItems/2);
-    rightHalf = rucksack(((totalItems/2)+1):totalItems);
+    totalItems = length(rucksack1);
 
-    for j = 1:(totalItems/2)
-        comLR = contains(rightHalf,leftHalf(j));
-        if comLR > 0
-            repeats(i) = leftHalf(j);
+    for j = 1:totalItems
+        com12 = contains(rucksack2,rucksack1(j));
+        com13 = contains(rucksack3,rucksack1(j));
+        if com12 > 0 && com13 > 0
+            repeats(i) = rucksack1(j);
         end
     end
 end
 
-for k = 1:length(lines)
+for k = 1:numberGroups
     current = repeats(k);
     current = current{1};
     values(k) = strfind(priority,current);

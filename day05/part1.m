@@ -2,7 +2,7 @@
 % Day 5
 % Part 1
 
-clear all
+clear
 clc
 
 % File reading
@@ -21,7 +21,6 @@ stacknum = 9;
 maxstackheight = 8;
 
 % Determine length of array
-maxl = 0;
 for i = 1:maxstackheight
     maxl = length(lines{1,i});
     if length(lines{1,i}) > maxl
@@ -39,6 +38,13 @@ for i = 1:maxstackheight
     end
 end
 clear i j lines idxchar
+
+% extend stacks
+ogstack = maxstackheight;
+maxstackheight = 100;
+temp = stacks;
+stacks = strings(maxstackheight,stacknum);
+stacks((maxstackheight-ogstack+1):end,:) = temp;
 
 % Begin parsing data
 rowOne = 11;
@@ -64,4 +70,31 @@ toArray = zeros(1,movecount);
 numMoves = zeros(1,movecount);
 
 for i = 1:movecount
-    
+    splitarray = split(lines(i));
+    numMoves(i) = str2num(splitarray(2));
+    fromArray(i) = str2num(splitarray(4));
+    toArray(i) = str2num(splitarray(6));
+end
+clear i ans lines splitarray
+
+for i = 1:movecount
+    for j = 1:numMoves(i)
+        for k = 1:size(stacks,1)
+            if ~(strcmp(stacks(k,fromArray(i)),' ') | strcmp(stacks(k,fromArray(i)),''))
+                moveLetter = stacks(k,fromArray(i));
+                break
+            end
+        end
+        
+        for l = 1:maxstackheight
+            if (strcmp(stacks(l,toArray(i)),' ') | strcmp(stacks(l,toArray(i)),'')) ...
+                    && ~(strcmp(stacks(l+1,toArray(i)),' ') | strcmp(stacks(l+1,toArray(i)),''))
+                stacks(l,toArray(i)) = moveLetter;
+                break
+            end
+        end
+
+    end
+end
+
+

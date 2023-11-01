@@ -77,17 +77,23 @@ for i = 1:movecount
 end
 clear i ans lines splitarray
 
+% Computation
+
 for i = 1:movecount
     for j = 1:numMoves(i)
         for k = 1:size(stacks,1)
             if ~(strcmp(stacks(k,fromArray(i)),' ') | strcmp(stacks(k,fromArray(i)),''))
                 moveLetter = stacks(k,fromArray(i));
+                stacks(k,fromArray(i)) = ' ';
                 break
             end
         end
         
         for l = 1:maxstackheight
-            if (strcmp(stacks(l,toArray(i)),' ') | strcmp(stacks(l,toArray(i)),'')) ...
+            if l == maxstackheight
+                stacks(l,toArray(i)) = moveLetter;
+                break   
+            elseif (strcmp(stacks(l,toArray(i)),' ') | strcmp(stacks(l,toArray(i)),'')) ...
                     && ~(strcmp(stacks(l+1,toArray(i)),' ') | strcmp(stacks(l+1,toArray(i)),''))
                 stacks(l,toArray(i)) = moveLetter;
                 break
@@ -95,6 +101,19 @@ for i = 1:movecount
         end
 
     end
+
+end
+clear i j k l moveLetter fromArray toArray temp ogstack movecount stacknum maxstackheight
+
+% Result
+topCrates = '';
+for i = 1:size(stacks,2)
+    for j = 1:size(stacks,1)
+        if isletter(stacks(j,i))
+            topCrates = append(topCrates,stacks(j,i));
+            break
+        end
+    end
 end
 
-
+fprintf('\nThe value of the top crates are: %s\n\n',topCrates)

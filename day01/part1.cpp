@@ -16,6 +16,5 @@ while (std::getline(file,line)) {
         total += std::stoi(line);
     }
 }
-max = std::max(total,max);
 printf("Max is equal to: %i\n",max);
 }

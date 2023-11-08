@@ -18,11 +18,9 @@ int main() {
     int lineLength;
     int rucksackQuantity;
     int tempIdx;
-    int tempScore;
     int totalScore;
 
     vector<char> commons;
-    vector<int> scores;
 
     while (std::getline(file,line)) {
         lineLength = line.length();

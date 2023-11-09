@@ -1,9 +1,7 @@
 #include <iostream>
 #include <fstream>
 #include <string>
-#include <vector>
-#include <algorithm>
-#include <numeric>
+
 using namespace std;
 
 int main() {
@@ -19,9 +17,8 @@ int main() {
     int lineLength;
     int counter = 0;
     int tempIdx;
-    int totalScore;
-
-    vector<char> commons;
+    int totalScore = 0;
+    int c2 = 0;
 
     while (std::getline(file,line)) {
         counter += 1;
@@ -32,11 +29,10 @@ int main() {
             e2 = line;
         } else if (counter == 3) {
             e3 = line;
+            c2 += 1;
             for (int i = 0; i < lineLength; i++) {
                 tempChar = e1[i];
-                if ((e2.find(tempChar) != string::npos) & (e3.find(tempChar != string::npos))) {
-                    commons.push_back(tempChar);
-                    std::cout << tempChar << "\n";
+                if (e2.find(tempChar) != std::string::npos && e3.find(tempChar) != std::string::npos) {
                     counter = 0;
                     tempIdx = pointReference.find(tempChar);
                     totalScore += (tempIdx + 1);

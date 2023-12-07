@@ -25,9 +25,11 @@ int main() {
         count += 1;
 
         for (int i = 0; i < numdigits; i++) {
-            line.replace(WrittenNumbers[i],ReplaceNumbers[i]);
+            while (line.find(WrittenNumbers[i]) != string::npos){
+                line.replace(line.find(WrittenNumbers[i]),WrittenNumbers[i].length(), ReplaceNumbers[i]);
+            }
         }
-
+        
         linelength = line.length();
         digits = "";
 

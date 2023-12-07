@@ -11,6 +11,8 @@ int main() {
     std::fstream file("input.txt");
     std::string line;
     std::string allDice;
+    std::string h1;
+    std::string h2;
 
     int totalsum;
     int hands;
@@ -30,13 +32,16 @@ int main() {
         allDice = line.substr(col_pos+1);
         cout << allDice << endl;
 
-        while (allDice.find(';') != std::string::npos){ 
+        if (allDice.find(';') != string::npos){ 
             scol_pos = allDice.find(';');
+            h1 = allDice.substr(0, scol_pos);
+            h2 = allDice.substr(scol_pos+1);
+            //allDice.erase(0,scol_pos);
+            cout << count << ' '<< h1 << '\n' << h2 << '\n' << '\n' << endl;
         }
-
-        if (total_red <= max_red && total_green <= max_green && total_blue <= max_blue){
+/*         if (total_red <= max_red && total_green <= max_green && total_blue <= max_blue){
             totalsum += count;
-        }
+        } */
     }
 
     std::cout << "\nThe total sum is: " << totalsum << "\n\n";

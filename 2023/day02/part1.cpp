@@ -12,7 +12,6 @@ int main() {
     std::string line;
     std::string allDice;
     std::string h1;
-    std::string h2;
     std::string c1;
     std::string c2;
     std::string color;
@@ -33,33 +32,45 @@ int main() {
     int die_red;
     int die_green;
     int die_blue;
+    int hands_left;
+    int last_hand;
 
     while (std::getline(file,line)) {
         count += 1;
         col_pos = line.find(':');
         allDice = line.substr(col_pos+1);
+        hands_left = 1;
+        last_hand = 0;
 
-        while (allDice.find(';') != string::npos){ 
-            scol_pos = allDice.find(';');
-            h1 = allDice.substr(0, scol_pos);
-            h2 = allDice.substr(scol_pos+1);
-
-            if (h1.find(',') != string::npos) {
-            while (h1.find(',') != string::npos){
-                com_pos = h1.find(',');
-                c1 = h1.substr(0, com_pos);
-                c2 = h1.substr(col_pos+1);
-
-                sp_pos = c1.find(' ');
-                color = c1.substr(sp_pos+1);
-                if (color == "blue") {
-                    die_blue = stoi(c1.substr(0,sp_pos));
-                } else if (color == "green") {
-                    die_green = stoi(c1.substr(0,sp_pos));
-                } else if (color == "red") {
-                    die_red == stoi(c1.substr(0,sp_pos));
-                }
+        while (hands_left){ 
+            if (allDice.find(';') == string::npos) {
+                last_hand = 1;
+                hands_left = 0;
+                h1 = allDice;
+            } else {
+                scol_pos = allDice.find(';');
+                h1 = allDice.substr(0,scol_pos);
+                allDice = allDice.substr(scol_pos+1);
+                hands_left = 1;
+                last_hand = 0;
             }
+
+            /* if (h1.find(',') != string::npos) {
+                while (h1.find(',') != string::npos){
+                    com_pos = h1.find(',');
+                    c1 = h1.substr(0, com_pos);
+                    c2 = h1.substr(col_pos+1);
+
+                    sp_pos = c1.find(' ');
+                    color = c1.substr(sp_pos+1);
+                    if (color == "blue") {
+                        die_blue = stoi(c1.substr(0,sp_pos));
+                    } else if (color == "green") {
+                        die_green = stoi(c1.substr(0,sp_pos));
+                    } else if (color == "red") {
+                        die_red == stoi(c1.substr(0,sp_pos));
+                    }
+                }
             } else {
 
             }
@@ -68,8 +79,8 @@ int main() {
                 allDice = h2;
             } else {
                 allDice = "";
-            }
-            cout << count << ' ' << h2 << '\n' << '\n' << endl;
+            } */
+            //cout << count << ' '<< '\n' << '\n' << endl;
         }
 
         /*

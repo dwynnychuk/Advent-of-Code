@@ -17,6 +17,8 @@ int main() {
     std::string color;
 
     int totalsum;
+    int oversum;
+    int gamesum;
     int hands;
     int count;
     int col_pos;
@@ -29,15 +31,16 @@ int main() {
     int max_red = 12;
     int max_green = 13;
     int max_blue = 14;
-    int die_red;
-    int die_green;
-    int die_blue;
+    int die_red = 0;
+    int die_green = 0;
+    int die_blue = 0;
     int hands_left;
     int last_hand;
     int die_left;
 
     while (std::getline(file,line)) {
         count += 1;
+        gamesum += count;
         col_pos = line.find(':');
         allDice = line.substr(col_pos+2);
         hands_left = 1;
@@ -56,8 +59,13 @@ int main() {
                 hands_left = 1;
                 last_hand = 0;
             }
-            cout << count << ' ' << h1 << endl;
+            //cout << count << ' ' << h1 << endl;
             die_left = 1;
+
+            die_red = 0;
+            die_green = 0;
+            die_blue = 0;
+
             while (die_left)
             {
                 if (h1.find(',') == string::npos)
@@ -73,14 +81,27 @@ int main() {
                     h1 = h1.substr(com_pos+2);
                     die_left = 1;
                 }
+
                 sp_pos = c1.find(' ');
                 color = c1.substr(sp_pos+1);
-                cout << count << ' ' << color << endl;
                 if (color.compare("blue") == 0)
                 {
                     die_blue = stoi(c1.substr(0, sp_pos));
+                } else if (color.compare("green") == 0)
+                {
+                    die_green = stoi(c1.substr(0, sp_pos));
+                } else if (color.compare("red") == 0)
+                {
+                    die_red = stoi(c1.substr(0, sp_pos));
                 }
-                //cout << count << ' ' << die_blue << endl;
+            }
+            //cout << "red " << die_red << " green " << die_green << " blue " << die_blue << endl;
+
+            if (die_red > max_red || die_green > max_green || die_blue > max_blue)
+            {
+                //cout << "MAX " << count << endl;
+                oversum += count;
+                break;
             }
         }
 
@@ -90,6 +111,6 @@ int main() {
         }
         */
     }
-
+    totalsum = gamesum - oversum;
     std::cout << "\nThe total sum is: " << totalsum << "\n\n";
 }

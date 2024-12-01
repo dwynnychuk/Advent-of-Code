@@ -7,7 +7,6 @@ day = "01"
 def get_data(day, year):
     with open(year + "/day" + day + "/input.txt") as file:
         data = file.read().splitlines()
-        print(data)
     return data
 
 def create_lines(data):
@@ -26,9 +25,11 @@ def get_difference(left, right):
         difference.append(abs(left[idx] - right[idx]))
     return difference
 
+def get_answer(difference):
+    answer = sum(difference)
+    print(f"The answer is: {answer}")
+
 data = get_data(day, year)
 left, right = create_lines(data)
 difference = get_difference(left, right)
-
-answer = sum(difference)
-print(answer)
+get_answer(difference)

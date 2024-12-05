@@ -21,12 +21,7 @@ def make_list(line):
 
 def check_if_safe(values) -> int:
     
-    if abs(values[1] - values[0]) > 3:
-        # first value violates big jump rule
-        # print("Big Jump")
-        return 0
-    
-    elif (values[1] > values[0]):
+    if (values[1] > values[0]):
         # increasing and no initial big jump
         for idx in range(1,len(values)):
             if (values[idx] > values[idx-1]) and (abs(values[idx] - values[idx-1]) <= 3):

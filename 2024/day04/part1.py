@@ -21,58 +21,106 @@ def search_input(data):
                 run_checks(row, col)
                 
 def run_checks(row, col):
+    global totalSum
     letter = Word(row, col)
-    if (letter.check_up() == True) or (letter.check_down() == True) or (letter.check_left() == True) or (letter.check_right() == True) or (letter.check_diagonals() == True):
-        print(f"row: {letter.y}, column: {letter.x}")
-
+    letter.check_up()
+    letter.check_down()
+    letter.check_left()
+    letter.check_right()
+    letter.check_diagonal_NW()
+    letter.check_diagonal_NE()
+    letter.check_diagonal_SW()
+    letter.check_diagonal_SE()
+        
 class Word:
     def __init__(self, row, column):
         self.x = column
         self.y = row
         
     def check_up(self) -> bool:
+        global totalSum
         if self.y < 3:
             return False
         else:
             if (data[self.y - 1][self.x] == "M") and (data[self.y - 2][self.x] == "A") and (data[self.y - 3][self.x] == "S"):
+                totalSum += 1
                 return True 
             else:    
                 return False
     
     def check_down(self) -> bool:
-        if self.y > (sizeY - 3):
+        global totalSum
+        if self.y > (sizeY - 4):
             return False
         else:
             if (data[self.y + 1][self.x] == "M") and (data[self.y + 2][self.x] == "A") and (data[self.y + 3][self.x] == "S"):
+                totalSum += 1
                 return True
             else:
                 return False
     
     def check_left(self) -> bool:
+        global totalSum
         if self.x < 3:
             return False
         else:
             if (data[self.y][self.x - 1] == "M") and (data[self.y][self.x - 2] == "A") and (data[self.y][self.x - 3] == "S"):
+                totalSum += 1
                 return True
             else: 
                 return False
     
     def check_right(self) -> bool:
-        if self.x > (sizeX - 3):
+        global totalSum
+        if self.x > (sizeX - 4):
             return False
         else:
             if (data[self.y][self.x + 1] == "M") and (data[self.y][self.x + 2] == "A") and (data[self.y][self.x + 3] == "S"):
-                return 1
+                totalSum += 1
+                return True
             else:
-                return 0
+                return False
     
-    def check_diagonals(self) -> bool:
-        pass
+    def check_diagonal_NW(self) -> bool:
+        global totalSum
+        if (self.x < 3) or (self.y < 3):
+            return False
+        elif (data[self.y - 1][self.x - 1] == "M") and (data[self.y - 2][self.x - 2] == "A") and (data[self.y - 3][self.x - 3] == "S"):
+            totalSum += 1
+            return True
+        else:
+            return False
     
-
+    def check_diagonal_NE(self) -> bool:
+        global totalSum
+        if (self.x > sizeX - 4) or (self.y < 3):
+            return False
+        elif (data[self.y - 1][self.x + 1] == "M") and (data[self.y - 2][self.x + 2] == "A") and (data[self.y - 3][self.x + 3] == "S"):
+            totalSum += 1
+            return True
+        else:
+            return False
+    
+    def check_diagonal_SW(self) -> bool:
+        global totalSum
+        if (self.x < 3) or (self.y > sizeY - 4):
+            return False
+        elif (data[self.y + 1][self.x - 1] == "M") and (data[self.y + 2][self.x - 2] == "A") and (data[self.y + 3][self.x - 3] == "S"):
+            totalSum += 1
+            return True
+        else:
+            return False
+    
+    def check_diagonal_SE(self) -> bool:
+        global totalSum
+        if (self.x > sizeX - 4) or (self.y > sizeY - 4):
+            return False
+        elif (data[self.y + 1][self.x + 1] == "M") and (data[self.y + 2][self.x + 2] == "A") and (data[self.y + 3][self.x + 3] == "S"):
+            totalSum += 1
+            return True
+        else:
+            return False
+    
 data , sizeX, sizeY = get_data(day, year)
 search_input(data)
-
-#val = Word(32,61)
-#print(val.check_up())
-#print(val.check_down())
+print(f"The total sum is: {totalSum}")

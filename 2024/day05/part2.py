@@ -18,7 +18,6 @@ def get_data(day, year):
 def define_rules(rulesInput):
     return [tuple(map(int, rule.split("|"))) for rule in rulesInput if "|" in rule]
 
-
 dataRules, dataUpdates = get_data(day, year)
 rules = define_rules(dataRules)
 
@@ -46,7 +45,6 @@ def order_update(update, rules):
     newUpdate = sorted(update, key=cmp_to_key(modified_compare))
     print(newUpdate)
     totalSum += newUpdate[int((len(newUpdate)-1)/2)]
-
 
 parse_updates(rules, dataUpdates)
 print(f"\nThe total of the middle updates passing the test is: {totalSum}\n")

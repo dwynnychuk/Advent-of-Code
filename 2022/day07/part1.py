@@ -1,47 +1,50 @@
 # AOC day 7 2022
-from ast import Add
 
-
-with open("day07/input.txt") as f:
-    data = f.read().splitlines()
-
-def AddPath(path,dir):
-    if path not in dir.keys():
-        dir[path] = 0
-    return dir
-
-dirSize = {}
-folders = []
-curPath = ""
-
-for line in data:
-    if line.startswith("$ cd"):
+class Problem:
+    def __init__(self, filepath):
+        with open(filepath) as f:
+            self.data = f.read().splitlines()
+        self.current_path = ""
+        self.directories = dict()
+        self.folders = ["/"]
+        self.totalsum = 0
+        self.threshold = 100000
+        
+    def solvep1(self):
+        for line in self.data:
+            self.parse_line(line)
+        for val in self.directories.values():
+            if val <= self.threshold:
+                self.totalsum += val
+    
+    def parse_line(self, line: str):
         if line.startswith("$ cd /"):
-            curPath = "/"
-            folders = ["/"]
-            dirSize = AddPath(curPath,dirSize)
-
+            self.current_path = "/"
+            self.folders = ["/"]
+            self.add_folder(self.current_path)
+            
         elif line.startswith("$ cd .."):
-            curPath = "/".join(curPath.split("/")[:-1])
-            folders.pop()
-
-        else:
-            if curPath == "/":
-                curPath += line.split()[-1]
+            self.current_path = "/".join(self.current_path.split("/")[:-1])
+            self.folders.pop()
+            
+        elif line.startswith("$ cd"):
+            if len(self.folders) == 1:
+                self.current_path += line.split(" ")[-1]
             else:
-                curPath += "/" + line.split()[-1]
-            folders.append(curPath)
-            dirSize = AddPath(curPath,dirSize)
+                self.current_path += "/" + line.split(" ")[-1]
+            self.folders.append(self.current_path)
+            self.add_folder(self.current_path) 
+            
+        elif line[0].isdigit():
+            fs = int(line.split(" ")[0])
+            for dir in self.folders:
+                self.directories[dir] += fs
+            
+    def add_folder(self, path: str) -> None:
+        if path not in self.directories.keys():
+            self.directories[path] = 0
 
-
-    if line[0].isdigit():
-        fileSize = int(line.split(' ')[0])
-        for dir in folders:
-            dirSize[dir] += fileSize
-
-largeFiles = []
-for i in dirSize.values():
-    if i < 100000:
-        largeFiles.append(i)
-
-print(f"The sum of all files less than size 100,000 is {sum(largeFiles)}")
+prob = Problem("day07/input.txt")
+sol = prob.solvep1()
+print(f"The total sum is: {prob.totalsum}")
+        

@@ -1,16 +1,27 @@
 # Day 04 of AOC 2022
-with open("day04/input.txt") as f:
-    data = f.read().splitlines()
+import numpy as np
+class Solution():
+    def __init__(self, datafile):
+        with open(datafile) as f:
+            self.data = f.read().splitlines()
+        self.total_contain = 0
+        
+    def part01(self) -> int:
+        for pair in self.data:
+            r1t, r2t = pair.split(",")
+            r1l, r1h = r1t.split("-")
+            r2l, r2h = r2t.split("-")
+            arr = np.array([r1l, r1h, r2l, r2h], dtype = int)
+            self.total_contain += self.check_if_contained(arr)
+        return self.total_contain
 
-contained = 0
-
-for d in data:
-    s1, s2 = d.split(",")
-    s1_s, s1_e = s1.split("-")
-    s2_s, s2_e = s2.split("-")
-    if int(s1_s) <= int(s2_s) and int(s1_e) >= int(s2_e):
-        contained += 1
-    elif int(s2_s) <= int(s1_s) and int(s2_e) >= int(s1_e):
-        contained += 1
-
-print(f"The number of fully contained zones is: {contained}.")
+    def check_if_contained(self, arr: list) -> int:
+        if arr[0] <= arr[2] and arr[1] >= arr[3]:
+            return 1
+        elif arr[2] <= arr[0] and arr[3] >= arr[1]:
+            return 1
+        else:
+            return 0
+        
+p1 = Solution("day04/input.txt")
+print(f"Solution to day 04 part 1 is: {p1.part01()}") 

@@ -3,42 +3,30 @@
 with open("day02/input.txt") as f:
     data = f.read().splitlines()
 
-elf = []
-play = []
-points = 0
-
-for d in data:
-    elf.append(d.split(" ")[0])
-    play.append(d.split(" ")[1])
-
-for i in range(len(elf)):
-    if play[i] == "X" and elf[i] == "A":
-        points += 0
-        points += 3
-    elif play[i] == "X" and elf[i] == "B":
-        points += 0
-        points += 1
-    elif play[i] == "X" and elf[i] == "C":
-        points += 0
-        points += 2
-    elif play[i] == "Y" and elf[i] == "A":
-        points += 3
-        points += 1
-    elif play[i] == "Y" and elf[i] == "B":
-        points += 3
-        points += 2
-    elif play[i] == "Y" and elf[i] == "C":
-        points += 3
-        points += 3
-    elif play[i] == "Z" and elf[i] == "A":
-        points += 6
-        points += 2
-    elif play[i] == "Z" and elf[i] == "B":
-        points += 6
-        points += 3
-    elif play[i] == "Z" and elf[i] == "C":
-        points += 6
-        points += 1
-
-print(points)
+def part02(data: list) -> int:
+    total_score = 0
+    for round in data:
+        match round:
+            case "A X":
+                total_score += (3 + 0)
+            case "A Y":
+                total_score += (1 + 3)
+            case "A Z":
+                total_score += (2 + 6)
+            case "B X":
+                total_score += (1 + 0)
+            case "B Y":
+                total_score += (2 + 3)
+            case "B Z":
+                total_score += (3 + 6)
+            case "C X":
+                total_score += (2 + 0)
+            case "C Y":
+                total_score += (3 + 3)
+            case "C Z":
+                total_score += (1 + 6)
+            
+    return total_score
+print(f"The solution to Part one is {part02(data)}")
+    
         

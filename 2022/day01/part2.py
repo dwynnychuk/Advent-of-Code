@@ -1,22 +1,18 @@
 # Day 1 of AOC 2022
+import numpy as np
 
 with open("day01/input.txt") as f:
     data = f.read().splitlines()
-
-elfSum = []
-currentSum = 0
-
-for d in data:
-    if d == '':
-        elfSum.append(currentSum)
-        currentSum = 0
+    
+maxelf = np.zeros([3,], dtype = int)
+elf = 0
+for snack in data:
+    if snack != "":
+        elf += int(snack)
     else:
-        currentSum += float(d)
+        if elf > np.min(maxelf):
+            maxelf[maxelf.argmin()] = int(elf)
+        elf = 0
+            
 
-topElf = []
-for i in range(3):
-    for c, v in enumerate(elfSum):
-        if v == max(elfSum):
-            topElf.append(elfSum.pop(c))
-            break
-print(sum(topElf))
+print(f"The three top elves are holding: {np.sum(maxelf)} Calories!")

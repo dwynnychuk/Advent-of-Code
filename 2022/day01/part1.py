@@ -2,15 +2,14 @@
 
 with open("day01/input.txt") as f:
     data = f.read().splitlines()
-
-elfSum = []
-currentSum = 0
-
-for d in data:
-    if d == '':
-        elfSum.append(currentSum)
-        currentSum = 0
+    
+maxelf = 0
+elf = 0
+for snack in data:
+    if snack != "":
+        elf += int(snack)
     else:
-        currentSum += float(d)
+        maxelf = max(maxelf, elf)
+        elf = 0
 
-print(max(elfSum))
+print(f"Max elf is holding: {maxelf} Calories!")

@@ -1,75 +1,39 @@
 # AOC 2022 day 8
 import numpy as np
 
-with open("day08/input.txt") as f:
-    data = f.read().splitlines()
-
-def CheckVisibility(row, column, treeArray, totRow, totCol):
-    height = treeArray[row,column]
-    visL = True
-    # check left
-    for l in range(column):
-        if treeArray[row,l] >= height:
-            visL = False
-            break
+class Solution:
+    def __init__(self, filepath):
+        with open(filepath) as f:
+            self.d = f.read().splitlines()
+        
+        self.visible = np.zeros([len(self.d), len(self.d[0])], dtype=int)
+        self.data = np.zeros_like(self.visible)
+        self.visible[0,:] = 1
+        self.visible[-1,:] = 1
+        self.visible[:,0] = 1
+        self.visible[:,-1] = 1
+        
+    def part01(self) -> int:
+        for r in range(len(self.d)):
+            for c in range(len(self.d[0])):
+                self.data[r][c] = int(self.d[r][c])
+        for r in range(len(self.data)):
+            for c in range(len(self.data[0])):        
+                if self.visible[r,c] != 1:
+                    self.visible[r,c] = self.check_height(r,c)
+        return np.sum(self.visible, axis=None)
+                    
+    def check_height(self, row, column) -> int:
+        if np.all(self.data[row][0:column] < self.data[row][column]):
+            return 1
+        elif np.all(self.data[row,column+1:] < self.data[row][column]):
+            return 1
+        elif np.all(self.data[0:row,column] < self.data[row][column]):
+            return 1
+        elif np.all(self.data[row+1:,column] < self.data[row][column]):
+            return 1
         else:
-            continue
-    if visL:
-        return True
+            return 0
 
-    # check right
-    visR = True
-    for r in range(column+1, totCol):
-        if treeArray[row,r] >= height:
-            visR = False
-            break
-        else:
-            continue
-    if visR:
-        return True
-
-    # check up
-    visU = True
-    for u in range(row):
-        if treeArray[u,column] >= height:
-            visU = False
-            break
-        else:
-            continue
-    if visU:
-        return True
-
-    # check down
-    visD = True
-    for d in range(row+1, totRow):
-        if treeArray[d, column] >= height:
-            visD = False
-            break
-        else:
-            continue
-    if visD:
-        return True
-    else:
-        return False
-
-
-rows = len(data)
-cols = len(data[0])
-trees = np.zeros((rows,cols))
-visible = 0
-
-for r in range(len(data)):
-    temp = list(data[r])
-    for c in range(len(temp)):
-        trees[r,c] = int(temp[c])
-
-for i in range(rows):
-    for j in range(cols):
-        if i == 0 or j == 0 or i == (rows-1) or j == (cols-1):
-            visible += 1
-        else:
-            if CheckVisibility(i,j,trees,rows,cols):
-                visible += 1
-            
-print(f"\n\nThe total number of visible trees is {visible}\n")
-
+sol = Solution("day08/input.txt")
+print(f"The sume of visible trees is {sol.part01()}")

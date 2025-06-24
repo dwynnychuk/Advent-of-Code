@@ -1,73 +1,43 @@
 # AOC 2022 day 8
 import numpy as np
 
-with open("day08/input.txt") as f:
-    data = f.read().splitlines()
+class Solution:
+    def __init__(self, filepath):
+        with open(filepath) as f:
+            self.d = f.read().splitlines()
+        
+        self.scenic = np.zeros([len(self.d), len(self.d[0])], dtype=int)
+        self.data = np.zeros_like(self.scenic)
+        
+    def part02(self) -> int:
+        for r in range(len(self.d)):
+            for c in range(len(self.d[0])):
+                self.data[r][c] = int(self.d[r][c])
+        for r in range(1,len(self.data)-1):     # all exterior will see 0 * something
+            for c in range(1,len(self.data[0])-1):        
+                self.scenic[r,c] = self.check_scenic(r,c)
+        return np.max(np.max(self.scenic))
+                    
+    def check_scenic(self, row, column) -> int:
+        dirs = [(-1, 0), (1, 0), (0, -1), (0, 1)]   #up, down, left, right
+        multvec = []
+        tempscore = 1
+        for d in dirs:
+            dr , dc = d
+            counter = 0
+            while True:
+                counter += 1
+                newrow, newcol = row + counter*dr, column + counter*dc
+                if newrow < 0 or newrow > self.data.shape[0]-1 or newcol < 0 or newcol > self.data.shape[1]-1:
+                    counter -= 1
+                    break
+                
+                if self.data[newrow, newcol] >= self.data[row,column]:
+                    break
+            multvec.append(counter)
+        for m in multvec:
+            tempscore = tempscore * m
+        return tempscore
 
-def ScenicScore(row, column, treeArray, totRow, totCol):
-    height = treeArray[row,column]
-    left, right, up, down = 1, 1, 1, 1
-    leftMult, rightMult, upMult, downMult = False, False, False, False
-
-    while not leftMult:
-        if column-left == 0:
-            leftMult = True
-            break
-        elif treeArray[row, column-left] >= height:
-            leftMult = True
-            break
-        else:
-            left += 1
-
-    while not rightMult:
-        if column+right == totCol-1:
-            rightMult = True
-            break
-        elif treeArray[row, column+right] >= height:
-            rightMult = True
-            break
-        else:
-            right += 1
-    
-    while not upMult:
-        if row-up == 0:
-            upMult = True
-            break
-        elif treeArray[row-up, column] >= height:
-            upMult = True
-            break
-        else:
-            up += 1
-    
-    while not downMult:
-        if row + down == totRow-1:
-            downMult = True
-            break
-        elif treeArray[row+down, column] >= height:
-            downMult = True
-            break
-        else:
-            down += 1
-    
-    score = left * right * up * down
-    return score
-
-rows = len(data)
-cols = len(data[0])
-trees = np.zeros((rows,cols))
-visibility = np.zeros((rows, cols))
-
-for r in range(len(data)):
-    temp = list(data[r])
-    for c in range(len(temp)):
-        trees[r,c] = int(temp[c])
-
-for i in range(rows):
-    for j in range(cols):
-        if i == 0 or j == 0 or i == (rows-1) or j == (cols-1):
-            visibility[i,j] = 0
-        else:
-           visibility[i,j] = ScenicScore(i,j,trees,rows,cols)
-
-print(f"\n\nThe maximum scenic score is {np.amax(visibility)}\n")
-
+sol = Solution("day08/input.txt")
+print(f"The maximum scenic score is {sol.part02()}")

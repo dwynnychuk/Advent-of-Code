@@ -1,91 +1,48 @@
-# AOC 2022 challenge day 9
-# code credit: @leej11 on github
-from os import X_OK
+# AOC 2022 day 09
 import numpy as np
-import copy
 
-with open("day09/input.txt") as f:
-    data = f.read().splitlines()
-
-move_direction = []
-move_quantity = []
-
-for d in data:
-    move_direction.append(d.split()[0])
-    move_quantity.append(int(d.split()[1]))
-
-class Knot:
-    def __init__(self, id):
-        self.id = id
-        self.pos = [0,0]
-        self.pos_visited = [[0,0]]
-    
-    def __str__(self):
-        return f"Knot #{self.id}"
-
-    def move(self, direction):
-        self.previous_pos = copy.deepcopy(self.pos)
-
-        if direction == "L":
-            self.pos[0] -= 1
-        elif direction == "R":
-            self.pos[0] += 1
-        elif direction == "U":
-            self.pos[1] -= 1
-        elif direction == "D":
-            self.pos[1] += 1
-        else:
-            print("error")
-
-        self.pos_visited.append(copy.deepcopy(self.pos))
-    
-    def update_position(self, new_position):
-        self.previous_pos = copy.deepcopy(self.pos)
-        self.pos = new_position
-        self.pos_visited.append(new_position)
-
-    def distinct_positions(self):
-        return set(tuple(pos) for pos in self.pos_visited)
-
-
-def update_all_positions(knots, direction):
-    for i in range(len(knots)):
-
-        if i == 0:
-            knots[i].move(direction)
-            continue
-
-        delta_x = knots[i-1].pos[0] - knots[i].pos[0]
-        delta_y = knots[i-1].pos[1] - knots[i].pos[1]
-
-        if abs(delta_x) > 1 or abs(delta_y) > 1:
-            delta_x_dir = -1 if delta_x < 0 else 1
-            delta_y_dir = -1 if delta_y < 0 else 1
-
-            if delta_x == 0:
-                x_new = copy.deepcopy(knots[i].pos[0])
-                y_new = copy.deepcopy(knots[i].pos[1]) + (1*delta_y_dir)
-                knots[i].update_position([x_new, y_new])
-
-            elif delta_y == 0:
-                x_new = copy.deepcopy(knots[i].pos[0]) + (1*delta_x_dir)
-                y_new = copy.deepcopy(knots[i].pos[1])
-                knots[i].update_position([x_new, y_new])
+class Solution:
+    def __init__(self, filepath):
+        with open(filepath) as f:
+            self.data = f.read().splitlines()
+            self.hpos = [0,0]
+            self.tpos = [0,0]
+            self.dirs = {"U": (-1,0),
+                         "D": (1,0),
+                         "L": (0,-1),
+                         "R": (0,1)}
+            self.t_history = set()
+            self.current_dir = []
+            self.last_dir = []
+        
+    def solvep1(self) -> int:
+        for line in self.data:
+            direction, moves = line.split(" ")
+            self.update_positions(direction,int(moves))
+            self.t_history.add((self.tpos[0], self.tpos[1]))
+        return len(self.t_history)
             
+    def update_positions(self, directions, moves):
+        self.current_dir = list(self.dirs[directions])
+
+        for _ in range(moves):            
+            # updating head position
+            self.hpos[0], self.hpos[1] = self.hpos[0] + self.current_dir[0], self.hpos[1] + self.current_dir[1]
+            maxdif = np.max([np.abs(self.hpos[0] - self.tpos[0]),np.abs(self.hpos[1] - self.tpos[1])])
+            #print(self.hpos, self.tpos, directions,moves, maxdif)                 
+            if maxdif > 1:
+                if np.min((np.abs(self.hpos[0] - self.tpos[0]),np.abs(self.hpos[1] - self.tpos[1]))) == 0:
+                    self.tpos[0], self.tpos[1] = self.tpos[0] + self.current_dir[0], self.tpos[1] + self.current_dir[1]
+                else:
+                    #diagonal
+                    dy = -1 if self.hpos[0] - self.tpos[0] < 0 else 1
+                    dx = -1 if self.hpos[1] - self.tpos[1] < 0 else 1
+                        
+                    self.tpos[0], self.tpos[1] = self.tpos[0] + dy, self.tpos[1] + dx   
             else:
-                x_new = copy.deepcopy(knots[i].pos[0]) + (1*delta_x_dir)
-                y_new = copy.deepcopy(knots[i].pos[1]) + (1*delta_y_dir)
-                knots[i].update_position([x_new, y_new])
+                continue   
+            
+            print(self.hpos, self.tpos, directions,moves)                 
 
-tail_visited = [[0,0]]
-knots = [Knot(0), Knot(1)]
-
-for m in range(len(move_direction)):
-    for _ in range(move_quantity[m]):
-        update_all_positions(knots, move_direction[m])
-
-ans = len(knots[1].distinct_positions())
-print(f"The number of positions visited by tail is: {ans}")
-
-
-
+day09 = Solution("day09/input.txt")
+print(f"The number of unique positions for the tail is: {day09.solvep1()}")
